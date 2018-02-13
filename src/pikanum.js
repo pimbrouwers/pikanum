@@ -15,8 +15,7 @@
   }
 }(this, function (numeral) {
 
-  var
-    document = window.document,
+  var document = window.document,
 
     hasEventListeners = !!window.addEventListener,
 
@@ -25,25 +24,27 @@
       controlsClass: null,
       controlsLocation: 'after',
       defaultNum: 0,
+      disabled: false,
       field: null,
       min: -1,
       max: -1,
+      readonly: false,
       step: 1
     },
 
     addEvent = function (element, event, handler) {
       if (hasEventListeners) {
-        el.addEventListener(event, handler, !!capture);
+        element.addEventListener(event, handler);
       } else {
-        el.attachEvent('on' + event, handler);
+        element.attachEvent('on' + event, handler);
       }
     },
 
     removeEvent = function (element, event, handler) {
       if (hasEventListeners) {
-        el.removeEventListener(event, handler, !!capture);
+        element.removeEventListener(event, handler);
       } else {
-        el.detachEvent('on' + event, handler);
+        element.detachEvent('on' + event, handler);
       }
     },
 
@@ -89,10 +90,27 @@
       var self = this,
         opt = self.config(options);
 
-      self.show();
+      self.init();
     };
 
   Pikanum.prototype = {
+    constructor: Pikanum,
+    init: function () {
+      var opt = this._o,
+        field = opt.field;
+
+      this.setValue(opt.defaultNum);
+      this.render();
+    },
+    destroy: function () {
+      removeEvent(this._dec, 'click', this.decrement);
+      removeEvent(this._inc, 'click', this.increment);
+
+      if (this._container.parentNode) {
+        this._container.parentNode.removeChild(this._container);
+      }
+    },
+
     config: function (options) {
       this._o = defaults;
 
@@ -106,54 +124,32 @@
 
       opt.defaultNum = options.defaultNum ? options.defaultNum : opt.defaultNum;
 
+      opt.disabled = options.disabled ? options.disabled : opt.disabled;
+
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
 
       opt.min = options.min ? options.min : opt.min;
 
       opt.max = options.max ? options.max : opt.max;
 
+      opt.readonly = options.readonly ? options.readonly : opt.readonly;
+
       opt.step = options.step ? options.step : opt.step;
 
       return opt;
     },
+
     decrement: function () {
-      var opt = this._o,
-        field = opt.field;
+      var opt = this._o;
 
       this.setValue(this.getValue() - opt.step);
     },
     increment: function () {
-      var opt = this._o,
-        field = opt.field;
+      var opt = this._o;
 
       this.setValue(this.getValue() + opt.step);
     },
-    render: function () {
-      var opt = this._o,
-        field = opt.field;;
 
-      var disp = field.display;
-      field.display = 'none';
-
-      addEvent(field, 'blur', this.getSetValue.bind(this));
-
-      var container = renderContainer(opt.containerClass);
-
-      field.parentNode.insertBefore(container, field);
-      container.appendChild(field);
-
-      var dec = renderDec(opt.controlsClass, this.decrement.bind(this)),
-        inc = renderInc(opt.controlsClass, this.increment.bind(this));
-
-      field.parentNode.insertBefore(dec, opt.controlsLocation === 'after' ? field.nextSibling : field);
-      field.parentNode.insertBefore(inc, opt.controlsLocation === 'after' ? field.nextSibling : field);
-
-      field.display = disp;
-
-      this._container = container;
-      this._dec = dec;
-      this._inc = inc;
-    },
     getValue: function (value) {
       var opt = this._o,
         field = opt.field,
@@ -174,25 +170,48 @@
         field.value = value;
       }
     },
-    getSetValue(){
+    getSetValue: function () {
       this.setValue(this.getValue());
     },
-    show: function () {
+
+    render: function () {
       var opt = this._o,
         field = opt.field;
 
+      //capture field display value
+      var disp = field.display;
 
-      this.setValue(opt.defaultNum);
-      this.render();
+      //hide field
+      field.display = 'none';
+
+      //attach blur handler
+      addEvent(field, 'blur', this.getSetValue.bind(this));
+
+      //create container
+      var container = renderContainer(opt.containerClass);
+
+      //insert container into DOM
+      field.parentNode.insertBefore(container, field);
+
+      //move field into container
+      container.appendChild(field);
+
+      //create controls
+      var dec = renderDec(opt.controlsClass, this.decrement.bind(this)),
+        inc = renderInc(opt.controlsClass, this.increment.bind(this));
+
+      //add controls to container at spec'd location
+      field.parentNode.insertBefore(dec, opt.controlsLocation === 'after' ? field.nextSibling : field);
+      field.parentNode.insertBefore(inc, opt.controlsLocation === 'after' ? field.nextSibling : field);
+
+      //render container, field & controls
+      field.display = disp;
+
+      //preserve references to elements
+      this._container = container;
+      this._dec = dec;
+      this._inc = inc;
     },
-    destroy: function () {
-      this._dec.removeEventListener('click', this.decrement);
-      this._inc.removeEventListener('click', this.increment);
-
-      if (this._container.parentNode) {
-        this._container.parentNode.removeChild(this._container);
-      }
-    }
   }
 
   return Pikanum;
