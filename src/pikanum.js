@@ -113,6 +113,9 @@
       var opt = this._o,
         field = opt.field;;
 
+      var disp = field.display;
+      field.display = 'none';
+
       var container = renderContainer(opt.containerClass);
 
       field.parentNode.insertBefore(container, field);
@@ -123,6 +126,8 @@
 
       field.parentNode.insertBefore(dec, opt.controlsLocation === 'after' ? field.nextSibling : field);
       field.parentNode.insertBefore(inc, opt.controlsLocation === 'after' ? field.nextSibling : field);
+
+      field.display = disp;
 
       this._container = container;
       this._dec = dec;
