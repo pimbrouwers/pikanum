@@ -30,7 +30,11 @@
       min: -1,
       max: -1,
       readonly: false,
-      step: 1
+      step: 1,
+
+      onChange: null,
+      onDecrement: null,
+      onIncrement: null
     },
 
     addEvent = function (element, event, handler) {
@@ -58,9 +62,9 @@
       return container;
     },
 
-    renderField = function(field, fieldClass, onBlur){      
+    renderField = function (field, fieldClass, onBlur) {
       field.className += ' pikanum-field ' + fieldClass;
-      
+
       addEvent(field, onBlur);
 
       return field;
@@ -108,7 +112,7 @@
       var opt = this._o,
         field = opt.field;
 
-      this.setValue(opt.defaultNum);
+      this.setValue(opt.defaultNum, true);
       this.render();
     },
     destroy: function () {
@@ -126,26 +130,20 @@
       opt = this._o;
 
       opt.containerClass = options.containerClass ? options.containerClass : opt.containerClass;
-
       opt.controlsClass = options.controlsClass ? options.controlsClass : opt.controlsClass;
-
-      opt.controlsLocation = options.controlsLocation ? options.controlsLocation : opt.controlsLocation
-
+      opt.controlsLocation = options.controlsLocation ? options.controlsLocation : opt.controlsLocation;
       opt.defaultNum = options.defaultNum ? options.defaultNum : opt.defaultNum;
-
       opt.disabled = options.disabled ? options.disabled : opt.disabled;
-
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
-
       opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
-
       opt.min = options.min ? options.min : opt.min;
-
       opt.max = options.max ? options.max : opt.max;
-
       opt.readonly = options.readonly ? options.readonly : opt.readonly;
-
       opt.step = options.step ? options.step : opt.step;
+
+      opt.onChange = options.onChange ? options.onChange : opt.onChange;
+      opt.onDecrement = options.onDecrement ? options.onDecrement : opt.onDecrement;
+      opt.onIncrement = options.onIncrement ? options.onIncrement : opt.onIncrement;
 
       return opt;
     },
@@ -153,12 +151,12 @@
     decrement: function () {
       var opt = this._o;
 
-      this.setValue(this.getValue() - opt.step);
+      this.setValue(this.getValue() - opt.step, false, this.notifyOnDecrement.bind(this));
     },
     increment: function () {
       var opt = this._o;
 
-      this.setValue(this.getValue() + opt.step);
+      this.setValue(this.getValue() + opt.step, false, this.notifyOnIncrement.bind(this));
     },
 
     getValue: function (value) {
@@ -172,17 +170,37 @@
 
       return currentValue;
     },
-    setValue: function (value) {
+    setValue: function (value, suppress, onSet) {
       var opt = this._o,
         field = opt.field;
 
       if ((opt.min < 0 || (opt.min && value >= opt.min)) &&
         (opt.max < 0 || (opt.max && value <= opt.max))) {
         field.value = value;
+
+        if (!suppress) this.notifyOnChange(value);
+
+        if (typeof (onSet) == 'function') onSet(value);
       }
     },
     getSetValue: function () {
       this.setValue(this.getValue());
+    },
+
+    notifyOnChange: function (value) {
+      var opt = this._o;
+
+      if (typeof (opt.onChange) == 'function') opt.onChange(value);
+    },
+    notifyOnDecrement: function (value) {
+      var opt = this._o;
+
+      if (typeof (opt.onDecrement) == 'function') opt.onDecrement(value);
+    },
+    notifyOnIncrement: function (value) {
+      var opt = this._o;
+
+      if (typeof (opt.onIncrement) == 'function') opt.onIncrement(value);
     },
 
     render: function () {
