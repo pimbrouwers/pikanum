@@ -26,6 +26,7 @@
       defaultNum: 0,
       disabled: false,
       field: null,
+      fieldClass: null,
       min: -1,
       max: -1,
       readonly: false,
@@ -55,6 +56,14 @@
       if (containerClass) container.className += containerClass;
 
       return container;
+    },
+
+    renderField = function(field, fieldClass, onBlur){      
+      field.className += ' pikanum-field ' + fieldClass;
+      
+      addEvent(field, onBlur);
+
+      return field;
     },
 
     renderInc = function (controlsClass, onClick) {
@@ -128,6 +137,8 @@
 
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
 
+      opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
+
       opt.min = options.min ? options.min : opt.min;
 
       opt.max = options.max ? options.max : opt.max;
@@ -184,11 +195,11 @@
       //hide field
       field.display = 'none';
 
-      //attach blur handler
-      addEvent(field, 'blur', this.getSetValue.bind(this));
-
       //create container
       var container = renderContainer(opt.containerClass);
+
+      //render field
+      field = renderField(field, opt.fieldClass, this.getSetValue.bind(this));
 
       //insert container into DOM
       field.parentNode.insertBefore(container, field);
