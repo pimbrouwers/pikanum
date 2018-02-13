@@ -15,7 +15,10 @@
   }
 }(this, function (numeral) {
 
-  var document = window.document,
+  var
+    document = window.document,
+
+    hasEventListeners = !!window.addEventListener,
 
     defaults = {
       containerClass: null,
@@ -26,6 +29,22 @@
       min: -1,
       max: -1,
       step: 1
+    },
+
+    addEvent = function (element, event, handler) {
+      if (hasEventListeners) {
+        el.addEventListener(event, handler, !!capture);
+      } else {
+        el.attachEvent('on' + event, handler);
+      }
+    },
+
+    removeEvent = function (element, event, handler) {
+      if (hasEventListeners) {
+        el.removeEventListener(event, handler, !!capture);
+      } else {
+        el.detachEvent('on' + event, handler);
+      }
     },
 
     renderContainer = function (containerClass) {
@@ -61,7 +80,7 @@
 
       btn.className = 'pikanum-controls ' + controlsClass;
 
-      btn.addEventListener('click', onClick);
+      addEvent(btn, 'click', onClick);
 
       return btn;
     },
@@ -116,6 +135,8 @@
       var disp = field.display;
       field.display = 'none';
 
+      addEvent(field, 'blur', this.getSetValue.bind(this));
+
       var container = renderContainer(opt.containerClass);
 
       field.parentNode.insertBefore(container, field);
@@ -133,12 +154,12 @@
       this._dec = dec;
       this._inc = inc;
     },
-    getValue: function(value) {
+    getValue: function (value) {
       var opt = this._o,
         field = opt.field,
         currentValue = parseInt(field.value);
 
-      if(isNaN(currentValue)){
+      if (isNaN(currentValue)) {
         currentValue = opt.defaultNum;
       }
 
@@ -152,6 +173,9 @@
         (opt.max < 0 || (opt.max && value <= opt.max))) {
         field.value = value;
       }
+    },
+    getSetValue(){
+      this.setValue(this.getValue());
     },
     show: function () {
       var opt = this._o,
