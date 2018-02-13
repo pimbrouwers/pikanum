@@ -1,0 +1,36 @@
+{
+  "name": "pikanum",
+  "version": "0.0.1",
+  "description": "A lightweight JavaScript number picker, with no dependencies.",
+  "author": "Pim Brouwers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pimbrouwers/pikanum/issues"
+  },
+  "homepage": "https://github.com/pimbrouwers/pikanum#readme",
+  "dependencies": {},
+  "devDependencies": {    
+    "ncp": "^2.0.0",
+    "npm-run-all": "latest",
+    "rimraf": "latest",
+    "uglify-js": "^3.3.10"
+  },
+  "main": "./dist/pikanum.min.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "js:clean": "rimraf ./dist/*.*",
+    "js:debug": "ncp ./src/pikanum.js ./dist/pikanum.js",
+    "js:min": "uglifyjs --compress --mangle --output ./dist/pikanum.min.js ./src/pikanum.js",
+    "start": "npm-run-all js:*"
+  },
+  "keywords": [
+    "number",
+    "number picker",
+    "numberpicker",
+    "lightweight number picker",
+    "javascript number picker",
+    "lightweight javascript number picker"
+  ]
+}
