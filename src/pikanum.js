@@ -101,13 +101,13 @@
       var opt = this._o,
         field = opt.field;
 
-      this.setValue(parseInt(field.value) - opt.step);
+      this.setValue(this.getValue() - opt.step);
     },
     increment: function () {
       var opt = this._o,
         field = opt.field;
 
-      this.setValue(parseInt(field.value) + opt.step);
+      this.setValue(this.getValue() + opt.step);
     },
     render: function () {
       var opt = this._o,
@@ -132,6 +132,17 @@
       this._container = container;
       this._dec = dec;
       this._inc = inc;
+    },
+    getValue: function(value) {
+      var opt = this._o,
+        field = opt.field,
+        currentValue = parseInt(field.value);
+
+      if(isNaN(currentValue)){
+        currentValue = opt.defaultNum;
+      }
+
+      return currentValue;
     },
     setValue: function (value) {
       var opt = this._o,
