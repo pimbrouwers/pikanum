@@ -215,9 +215,9 @@
         currentValue = parseInt(field.value);
       
       if (isNaN(currentValue)) {
-        currentValue = this.getDefaultValue();
+        currentValue = opt.setValueFromDefault ? this.getDefaultValue() : 0;
       }
-            
+                  
       return currentValue;
     },
     setValue: function (value, onSet) {
