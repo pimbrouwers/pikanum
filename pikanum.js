@@ -216,7 +216,7 @@
     setValueFromDefault: function(){
       var opt = this._o;
 
-      this.setValue(this.getValue() + opt.step, this.notifyOnLoad.bind(this));
+      this.setValue(this.getValue(), this.notifyOnLoad.bind(this));
     },
     getSetValue: function () {    
       var opt = this._o,
