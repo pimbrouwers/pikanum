@@ -183,11 +183,11 @@
       this.setValue(this.getValue() + opt.step, false, this.notifyOnIncrement.bind(this));
     },
 
-    getValue: function (value) {
+    getValue: function () {
       var opt = this._o,
         field = opt.field,
         currentValue = parseInt(field.value);
-
+      
       if (isNaN(currentValue)) {
         currentValue = opt.defaultNum;
       }
@@ -205,11 +205,16 @@
         if (!suppress) this.notifyOnChange(value);
         if (typeof (onSet) == 'function') onSet(value);
       }
-      else {
+    },
+    getSetValue: function () {    
+      var opt = this._o,
+        field = opt.field;
+
+      if(isNan(field.value))
+      {
         field.value = opt.defaultNum;
       }
-    },
-    getSetValue: function () {
+      
       this.setValue(this.getValue());
     },
 
