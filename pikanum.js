@@ -210,11 +210,11 @@
       var opt = this._o,
         field = opt.field;
 
-      if(isNan(field.value))
+      if(isNaN(field.value))
       {
         field.value = opt.defaultNum;
       }
-      
+
       this.setValue(this.getValue());
     },
 
