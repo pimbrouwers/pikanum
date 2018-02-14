@@ -154,6 +154,8 @@
       opt.containerClass = options.containerClass ? options.containerClass : opt.containerClass;
       opt.controlsClass = options.controlsClass ? options.controlsClass : opt.controlsClass;
       opt.controlsLocation = options.controlsLocation ? options.controlsLocation : opt.controlsLocation;
+      opt.controlsSymbolDecrement = options.controlsSymbolDecrement ? options.controlsSymbolDecrement : opt.controlsSymbolDecrement;
+      opt.controlsSymbolIncrement = options.controlsSymbolIncrement ? options.controlsSymbolIncrement : opt.controlsSymbolIncrement;
       opt.defaultNum = options.defaultNum ? options.defaultNum : opt.defaultNum;
       opt.disabled = options.disabled ? options.disabled : opt.disabled;
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
