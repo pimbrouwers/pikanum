@@ -215,14 +215,18 @@
         currentValue = parseInt(field.value);
       
       if (isNaN(currentValue)) {
-        currentValue = opt.defaultNum;
+        currentValue = this.getDefaultValue();
       }
-
+            
       return currentValue;
     },
     setValue: function (value, onSet) {
       var opt = this._o,
         field = opt.field;
+
+      if (value % opt.step != 0) {
+        value = Math.floor(value / opt.step) * opt.step;
+      }
 
       if ((opt.min === -1 || (opt.min && value >= opt.min)) &&
         (opt.max === -1 || (opt.max && value <= opt.max))) {
