@@ -36,7 +36,8 @@
 
       onChange: null,
       onDecrement: null,
-      onIncrement: null
+      onIncrement: null,
+      onLoad: null
     },
 
     addEvent = function (element, event, handler) {
@@ -133,8 +134,8 @@
     init: function () {
       var opt = this._o,
         field = opt.field;
-
-      this.setValue(opt.defaultNum, null, true);      
+      
+      this.setValueFromDefault();      
       this.render();
     },
     destroy: function () {
@@ -168,6 +169,7 @@
       opt.onChange = options.onChange ? options.onChange : opt.onChange;
       opt.onDecrement = options.onDecrement ? options.onDecrement : opt.onDecrement;
       opt.onIncrement = options.onIncrement ? options.onIncrement : opt.onIncrement;
+      opt.onLoad = options.onLoad ? options.onLoad : opt.onLoad;
 
       return opt;
     },
@@ -211,6 +213,11 @@
         }
       }
     },
+    setValueFromDefault: function(){
+      var opt = this._o;
+
+      this.setValue(this.getValue() + opt.step, this.notifyOnLoad.bind(this));
+    },
     getSetValue: function () {    
       var opt = this._o,
         field = opt.field;
@@ -237,6 +244,11 @@
       var opt = this._o;
 
       if (typeof (opt.onIncrement) == 'function') opt.onIncrement(value);
+    },
+    notifyOnLoad: function(value){
+      var opt = this._o;
+
+      if (typeof (opt.onLoad) == 'function') opt.onLoad(value);
     },
 
     render: function () {
