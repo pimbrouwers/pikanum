@@ -203,8 +203,10 @@
         field.value = value;
 
         if (!suppress) this.notifyOnChange(value);
-
         if (typeof (onSet) == 'function') onSet(value);
+      }
+      else {
+        field.value = opt.defaultNum;
       }
     },
     getSetValue: function () {
