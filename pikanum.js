@@ -157,7 +157,7 @@
       opt.controlsLocation = options.controlsLocation ? options.controlsLocation : opt.controlsLocation;
       opt.controlsSymbolDecrement = options.controlsSymbolDecrement ? options.controlsSymbolDecrement : opt.controlsSymbolDecrement;
       opt.controlsSymbolIncrement = options.controlsSymbolIncrement ? options.controlsSymbolIncrement : opt.controlsSymbolIncrement;
-      opt.defaultNum = options.defaultNum ? options.defaultNum : opt.defaultNum;
+      opt.defaultNum = (options.defaultNum && !isNaN(options.defaultNum)) ? options.defaultNum : opt.defaultNum;
       opt.disabled = options.disabled ? options.disabled : opt.disabled;
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
       opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
@@ -216,7 +216,7 @@
     setValueFromDefault: function(){
       var opt = this._o;
 
-      this.setValue(this.getValue(), this.notifyOnLoad.bind(this));
+      this.setValue(opt.defaultNum, this.notifyOnLoad.bind(this));
     },
     getSetValue: function () {    
       var opt = this._o,
