@@ -254,8 +254,8 @@
         inc = renderInc(opt.controlsSymbolIncrement,opt.controlsClass, this.increment.bind(this));
 
       //add controls to container at spec'd location
-      field.parentNode.insertBefore(dec, opt.controlsLocation === 'after' ? field.nextSibling : field);
       field.parentNode.insertBefore(inc, opt.controlsLocation === 'after' ? field.nextSibling : field);
+      field.parentNode.insertBefore(dec, opt.controlsLocation === 'after' ? field.nextSibling : field);      
 
       //render container, field & controls
       field.display = disp;
