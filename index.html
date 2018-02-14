@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>pikanum</title>
+</head>
+
+<body>
+
+  <form>
+    <input id="pikanum" type="text">
+  </form>
+
+  <script type="text/javascript" src="pikanum.js"></script>
+  <script type="text/javascript">
+
+    var field = document.getElementById('pikanum');
+
+    var picker = new Pikanum({
+      containerClass: 'container-class',
+      controlsClass: 'controls-class',
+      controlsLocation: 'after',
+      controlsSymbolDecrement: '&minus;',
+      controlsSymbolIncrement: '&plus;',
+
+      field: field,
+      fieldClass: 'field-class',
+
+      defaultNum: 1,
+      setValueFromDefault: true,
+
+      disabled: false,
+      readonly: false,
+
+      min: -999,
+      max: 999,
+      step: 2,
+
+      onChange: function(val){
+        console.log('onChange', val)
+      },
+      onDecrement: function (val) {
+        console.log('onDecrement', val)
+      },
+      onIncrement: function (val) {
+        console.log('onIncrement', val)
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>

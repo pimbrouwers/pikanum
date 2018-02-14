@@ -30,7 +30,7 @@
       fieldClass: null,
 
       defaultNum: 0,
-      setDefaultNum: false,
+      setValueFromDefault: false,
       
       disabled: false,
       readonly: false,
@@ -41,8 +41,7 @@
 
       onChange: null,
       onDecrement: null,
-      onIncrement: null,
-      onLoad: null
+      onIncrement: null
     },
 
     addEvent = function (element, event, handler) {
@@ -70,10 +69,8 @@
       return container;
     },
 
-    renderField = function (field, opt, onBlur) {
+    renderField = function (field, opt) {
       field.className += ' pikanum-field ' + opt.fieldClass;
-
-      addEvent(field, 'blur', onBlur);
 
       if(opt.disabled === true) {
         field.setAttribute('disabled', 'disabled');
@@ -171,7 +168,7 @@
       opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
 
       opt.defaultNum = (options.defaultNum && !isNaN(options.defaultNum)) ? options.defaultNum : opt.defaultNum;
-      opt.setDefaultNum = options.setDefaultNum ? options.setDefaultNum : opt.setDefaultNum;
+      opt.setValueFromDefault = options.setValueFromDefault ? options.setValueFromDefault : opt.setValueFromDefault;
 
       opt.disabled = options.disabled ? options.disabled : opt.disabled;
       opt.readonly = options.readonly ? options.readonly : opt.readonly;
@@ -183,7 +180,6 @@
       opt.onChange = options.onChange ? options.onChange : opt.onChange;
       opt.onDecrement = options.onDecrement ? options.onDecrement : opt.onDecrement;
       opt.onIncrement = options.onIncrement ? options.onIncrement : opt.onIncrement;
-      opt.onLoad = options.onLoad ? options.onLoad : opt.onLoad;
 
       return opt;
     },
@@ -199,6 +195,20 @@
       this.setValue(this.getValue() + opt.step, this.notifyOnIncrement.bind(this));
     },
 
+    getDefaultValue: function(){
+      var opt = this._o,
+          val = opt.defaultNum;
+      
+      if(opt.min !== -1 && opt.defaultNum < opt.min) {
+        val = opt.min;
+      }
+      else if (opt.max !== -1 && opt.defaultNum > opt.max)
+      {
+        val = opt.max;
+      }
+
+      return val;
+    },
     getValue: function () {
       var opt = this._o,
         field = opt.field,
@@ -210,17 +220,15 @@
 
       return currentValue;
     },
-    setValue: function (value, onSet, suppress) {
+    setValue: function (value, onSet) {
       var opt = this._o,
         field = opt.field;
 
-      if ((opt.min < 0 || (opt.min && value >= opt.min)) &&
-        (opt.max < 0 || (opt.max && value <= opt.max))) {
+      if ((opt.min === -1 || (opt.min && value >= opt.min)) &&
+        (opt.max === -1 || (opt.max && value <= opt.max))) {
         field.value = value;
 
-        if(!suppress) {
-          this.notifyOnChange(value);
-        }
+        this.notifyOnChange(value);
 
         if (typeof (onSet) == 'function') {
           onSet(value);
@@ -230,20 +238,9 @@
     setValueFromDefault: function(){
       var opt = this._o;
 
-      this.setValue(opt.defaultNum, this.notifyOnLoad.bind(this));
+      this.setValue(this.getDefaultValue());
     },
-    getSetValue: function () {    
-      var opt = this._o,
-        field = opt.field;
-
-      if(isNaN(field.value))
-      {
-        field.value = (opt.min > -1) ? opt.min : opt.defaultNum;
-      }
-
-      this.setValue(this.getValue());
-    },
-
+    
     notifyOnChange: function (value) {
       var opt = this._o;
 
@@ -259,12 +256,7 @@
 
       if (typeof (opt.onIncrement) == 'function') opt.onIncrement(value);
     },
-    notifyOnLoad: function(value){
-      var opt = this._o;
-
-      if (typeof (opt.onLoad) == 'function') opt.onLoad(value);
-    },
-
+    
     render: function () {
       var opt = this._o,
         field = opt.field;
@@ -279,7 +271,7 @@
       var container = renderContainer(opt.containerClass);
 
       //render field
-      field = renderField(field, opt, this.getSetValue.bind(this));
+      field = renderField(field, opt);
 
       //insert container into DOM
       field.parentNode.insertBefore(container, field);
