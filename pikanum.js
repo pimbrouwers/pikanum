@@ -212,7 +212,7 @@
 
       if(isNaN(field.value))
       {
-        field.value = opt.defaultNum;
+        field.value = (opt.min > -1) ? opt.min : opt.defaultNum;
       }
 
       this.setValue(this.getValue());
