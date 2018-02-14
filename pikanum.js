@@ -1,7 +1,7 @@
 /*
-	Pikanum 0.0.1
-	Author: Pim Brouwers
-	License: MIT	
+  Pikanum 0.0.1
+  Author: Pim Brouwers
+  License: MIT	
 */
 (function (root, factory) {
   if (typeof define === "function" && define.amd) {

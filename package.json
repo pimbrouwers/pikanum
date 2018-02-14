@@ -15,15 +15,11 @@
     "rimraf": "latest",
     "uglify-js": "^3.3.10"
   },
-  "main": "./dist/pikanum.min.js",
+  "main": "./pikanum.js",
   "files": [
-    "dist/"
+    "./pikanum.js"
   ],
-  "scripts": {
-    "js:clean": "rimraf ./dist/*.*",
-    "js:debug": "ncp ./src/pikanum.js ./dist/pikanum.js",
-    "js:min": "uglifyjs --compress --mangle --output ./dist/pikanum.min.js ./src/pikanum.js",
-    "start": "npm-run-all js:*"
+  "scripts": {    
   },
   "keywords": [
     "number",
