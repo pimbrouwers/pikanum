@@ -25,13 +25,18 @@
       controlsLocation: 'after',
       controlsSymbolDecrement: '&minus;',
       controlsSymbolIncrement: '&plus;',
-      defaultNum: 0,
-      disabled: false,
+      
       field: null,
       fieldClass: null,
+
+      defaultNum: 0,
+      setDefaultNum: false,
+      
+      disabled: false,
+      readonly: false,
+      
       min: -1,
       max: -1,
-      readonly: false,
       step: 1,
 
       onChange: null,
@@ -135,7 +140,11 @@
       var opt = this._o,
         field = opt.field;
       
-      this.setValueFromDefault();      
+      if(opt.setValueFromDefault)
+      {
+        this.setValueFromDefault();      
+      }
+
       this.render();
     },
     destroy: function () {
@@ -157,13 +166,18 @@
       opt.controlsLocation = options.controlsLocation ? options.controlsLocation : opt.controlsLocation;
       opt.controlsSymbolDecrement = options.controlsSymbolDecrement ? options.controlsSymbolDecrement : opt.controlsSymbolDecrement;
       opt.controlsSymbolIncrement = options.controlsSymbolIncrement ? options.controlsSymbolIncrement : opt.controlsSymbolIncrement;
-      opt.defaultNum = (options.defaultNum && !isNaN(options.defaultNum)) ? options.defaultNum : opt.defaultNum;
-      opt.disabled = options.disabled ? options.disabled : opt.disabled;
+      
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
       opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
-      opt.min = options.min ? options.min : opt.min;
-      opt.max = options.max ? options.max : opt.max;
+
+      opt.defaultNum = (options.defaultNum && !isNaN(options.defaultNum)) ? options.defaultNum : opt.defaultNum;
+      opt.setDefaultNum = options.setDefaultNum ? options.setDefaultNum : opt.setDefaultNum;
+
+      opt.disabled = options.disabled ? options.disabled : opt.disabled;
       opt.readonly = options.readonly ? options.readonly : opt.readonly;
+      
+      opt.min = options.min ? options.min : opt.min;
+      opt.max = options.max ? options.max : opt.max;      
       opt.step = options.step ? options.step : opt.step;
 
       opt.onChange = options.onChange ? options.onChange : opt.onChange;
