@@ -23,6 +23,8 @@
       containerClass: null,
       controlsClass: null,
       controlsLocation: 'after',
+      controlsSymbolDecrement: '&minus;',
+      controlsSymbolIncrement: '&plus;',
       defaultNum: 0,
       disabled: false,
       field: null,
@@ -62,28 +64,48 @@
       return container;
     },
 
-    renderField = function (field, fieldClass, onBlur) {
-      field.className += ' pikanum-field ' + fieldClass;
+    renderField = function (field, opt, onBlur) {
+      field.className += ' pikanum-field ' + opt.fieldClass;
 
       addEvent(field, onBlur);
+
+      if(opt.disabled === true) {
+        field.setAttribute('disabled', 'disabled');
+      }
+
+      if(opt.readonly === true){
+        field.setAttribute('readonly', 'readonly');
+      }
+
+      if(opt.min > -1)
+      {
+        field.setAttribute('min', opt.min);
+      }
+
+      if(opt.max > -1)
+      {
+        field.setAttribute('max', opt.max);
+      }
+
+      field.setAttribute('step', opt.step);
 
       return field;
     },
 
-    renderInc = function (controlsClass, onClick) {
+    renderInc = function (symbol, controlsClass, onClick) {
       var controlClass = 'pikanum-controls-inc ';
 
       if (controlsClass) controlClass += controlsClass;
 
-      return renderControl('&plus;', controlClass, onClick);
+      return renderControl(symbol, controlClass, onClick);
     },
 
-    renderDec = function (controlsClass, onClick) {
+    renderDec = function (symbol, controlsClass, onClick) {
       var controlClass = 'pikanum-controls-dec ';
 
       if (controlsClass) controlClass += controlsClass;
 
-      return renderControl('&minus;', controlClass, onClick);
+      return renderControl(symbol, controlClass, onClick);
     },
 
     renderControl = function (symbol, controlsClass, onClick) {
@@ -217,7 +239,7 @@
       var container = renderContainer(opt.containerClass);
 
       //render field
-      field = renderField(field, opt.fieldClass, this.getSetValue.bind(this));
+      field = renderField(field, opt, this.getSetValue.bind(this));
 
       //insert container into DOM
       field.parentNode.insertBefore(container, field);
@@ -226,8 +248,8 @@
       container.appendChild(field);
 
       //create controls
-      var dec = renderDec(opt.controlsClass, this.decrement.bind(this)),
-        inc = renderInc(opt.controlsClass, this.increment.bind(this));
+      var dec = renderDec(opt.controlsSymbolDecrement, opt.controlsClass, this.decrement.bind(this)),
+        inc = renderInc(opt.controlsSymbolIncrement,opt.controlsClass, this.increment.bind(this));
 
       //add controls to container at spec'd location
       field.parentNode.insertBefore(dec, opt.controlsLocation === 'after' ? field.nextSibling : field);
