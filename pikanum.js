@@ -134,7 +134,7 @@
       var opt = this._o,
         field = opt.field;
 
-      this.setValue(opt.defaultNum);
+      this.setValue(opt.defaultNum, null, true);      
       this.render();
     },
     destroy: function () {
@@ -194,7 +194,7 @@
 
       return currentValue;
     },
-    setValue: function (value, onSet) {
+    setValue: function (value, onSet, suppress) {
       var opt = this._o,
         field = opt.field;
 
@@ -202,8 +202,13 @@
         (opt.max < 0 || (opt.max && value <= opt.max))) {
         field.value = value;
 
-        this.notifyOnChange(value);
-        if (typeof (onSet) == 'function') onSet(value);
+        if(!suppress) {
+          this.notifyOnChange(value);
+        }
+
+        if (typeof (onSet) == 'function') {
+          onSet(value);
+        }
       }
     },
     getSetValue: function () {    
