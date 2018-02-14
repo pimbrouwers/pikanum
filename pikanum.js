@@ -67,7 +67,7 @@
     renderField = function (field, opt, onBlur) {
       field.className += ' pikanum-field ' + opt.fieldClass;
 
-      addEvent(field, onBlur);
+      addEvent(field, 'blur', onBlur);
 
       if(opt.disabled === true) {
         field.setAttribute('disabled', 'disabled');
