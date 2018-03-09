@@ -12,21 +12,22 @@
 
   <form>
     <input id="pikanum" type="text">
+
+    <br /><br />
+
+    <input id="pikanum2" type="text">
   </form>
 
   <script type="text/javascript" src="pikanum.js"></script>
   <script type="text/javascript">
-
-    var field = document.getElementById('pikanum');
-
-    var picker = new Pikanum({
+    var opt = {
       containerClass: 'container-class',
       controlsClass: 'controls-class',
       controlsLocation: 'after',
       controlsSymbolDecrement: '&minus;',
       controlsSymbolIncrement: '&plus;',
 
-      field: field,
+      field: null,
       fieldClass: 'field-class',
 
       //defaultNum: 67,
@@ -39,7 +40,7 @@
       min: 5,
       step: 5,
 
-      onChange: function(val){
+      onChange: function (val) {
         console.log('onChange', val)
       },
       onDecrement: function (val) {
@@ -48,8 +49,16 @@
       onIncrement: function (val) {
         console.log('onIncrement', val)
       }
-    });
+    };
 
+    var field = document.getElementById('pikanum');
+    var field2 = document.getElementById('pikanum2');
+
+    opt.field = field;
+    var picker = new Pikanum(opt);
+
+    opt.field = field2;
+    var picker2 = new Pikanum(opt);
   </script>
 
 </body>

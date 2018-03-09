@@ -14,7 +14,8 @@
     root.Pikanum = factory();
   }
 }(this, function (numeral) {
-
+  'use strict';
+  
   var document = window.document,
 
     hasEventListeners = !!window.addEventListener,
@@ -125,19 +126,15 @@
     },
 
     Pikanum = function (options) {
-      var self = this,
-        opt = self.config(options);
+      this._o = this.config(options);
 
-      self.init();
+      this.init();
     };
 
   Pikanum.prototype = {
     constructor: Pikanum,
-    init: function () {
-      var opt = this._o,
-        field = opt.field;
-      
-      if(opt.setValueFromDefault)
+    init: function () {            
+      if (this._o.setValueFromDefault)
       {
         this.setValueFromDefault();      
       }
@@ -153,11 +150,9 @@
       }
     },
 
-    config: function (options) {
-      this._o = defaults;
-
-      opt = this._o;
-
+    config: function (options) {     
+      var opt = JSON.parse(JSON.stringify(defaults));
+      
       opt.containerClass = options.containerClass ? options.containerClass : opt.containerClass;
       opt.controlsClass = options.controlsClass ? options.controlsClass : opt.controlsClass;
       opt.controlsLocation = options.controlsLocation ? options.controlsLocation : opt.controlsLocation;
