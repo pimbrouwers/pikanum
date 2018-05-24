@@ -162,7 +162,7 @@
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
       opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
 
-      opt.defaultNum = ('defaultNum' in option) ? options.defaultNum : opt.defaultNum;
+      opt.defaultNum = ('defaultNum' in options) ? options.defaultNum : opt.defaultNum;
       opt.setValueFromDefault = options.setValueFromDefault ? options.setValueFromDefault : opt.setValueFromDefault;
 
       opt.disabled = options.disabled ? options.disabled : opt.disabled;
