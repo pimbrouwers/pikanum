@@ -223,8 +223,8 @@
         value = Math.floor(value / opt.step) * opt.step;
       }
 
-      if ((opt.min === -1 || (opt.min && value >= opt.min)) &&
-        (opt.max === -1 || (opt.max && value <= opt.max))) {
+      if ((opt.min === -1 || (value >= opt.min)) &&
+        (opt.max === -1 || (value <= opt.max))) {
         field.value = value;
 
         this.notifyOnChange(value);
