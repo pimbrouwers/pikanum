@@ -162,15 +162,15 @@
       opt.field = (options.field && options.field.nodeName) ? options.field : opt.field;
       opt.fieldClass = options.fieldClass ? options.fieldClass : opt.fieldClass;
 
-      opt.defaultNum = (options.defaultNum && !isNaN(options.defaultNum)) ? options.defaultNum : opt.defaultNum;
+      opt.defaultNum = ('defaultNum' in option) ? options.defaultNum : opt.defaultNum;
       opt.setValueFromDefault = options.setValueFromDefault ? options.setValueFromDefault : opt.setValueFromDefault;
 
       opt.disabled = options.disabled ? options.disabled : opt.disabled;
       opt.readonly = options.readonly ? options.readonly : opt.readonly;
       
-      opt.min = options.min ? options.min : opt.min;
-      opt.max = options.max ? options.max : opt.max;      
-      opt.step = options.step ? options.step : opt.step;
+      opt.min = ('min' in options) ? options.min : opt.min;
+      opt.max = ('max' in options) ? options.max : opt.max;      
+      opt.step = ('step' in options) ? options.step : opt.step;
 
       opt.onChange = options.onChange ? options.onChange : opt.onChange;
       opt.onDecrement = options.onDecrement ? options.onDecrement : opt.onDecrement;

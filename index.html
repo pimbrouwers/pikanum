@@ -11,7 +11,7 @@
 <body>
 
   <form>
-    <input id="pikanum" type="text">
+    <input id="pikanum" type="text" value="0">
 
     <br /><br />
 
@@ -37,8 +37,8 @@
       readonly: false,
 
       max: 25,
-      min: 5,
-      step: 5,
+      min: 0,
+      step: 1,
 
       onChange: function (val) {
         console.log('onChange', val)
