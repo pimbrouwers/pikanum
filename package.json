@@ -17,7 +17,7 @@
   },
   "main": "./pikanum.js",
   "files": [
-    "./pikanum.js"
+    "pikanum.js"
   ],
   "scripts": {    
   },
